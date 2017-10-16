@@ -1,9 +1,19 @@
 {
   "name": "flat-files",
   "version": "0.0.1",
-  "description": "Get a flatten array of dropped files using FileSystem api Edit",
-  "main": "index.js",
+  "description": "Get a flatten array of dropped files using FileSystem api",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "webpack -w",
+    "serve": "serve"
+  },
   "repository": "git@github.com:zzarcon/flat-files.git",
   "author": "Hector Leon Zarco Garcia <hezarco@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "awesome-typescript-loader": "^3.2.3",
+    "serve": "^6.2.0",
+    "typescript": "^2.5.3",
+    "webpack": "^3.7.1"
+  }
 }
