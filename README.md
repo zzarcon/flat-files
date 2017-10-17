@@ -20,4 +20,7 @@ flatFiles(document.querySelector('#dropzone'), (files) => {
 
 # TODO
 
-* Typescript
+* Specs
+* Release script
+* Browser support
+* Error callback

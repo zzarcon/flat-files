@@ -53,23 +53,23 @@ class FileFlattener {
     });
   }
 
+  private readEntries(entry: FileSystemEntry): Promise<FileSystemEntry[]> {
+    return new Promise(resolve => {
+      const reader = entry.createReader();
+
+      reader.readEntries(resolve);
+    });
+  }
+
   private getFilesFromEntry = (entry: FileSystemEntry): Promise<FileSystemEntry[]> | FileSystemEntry => {
-    const {getFilesFromEntry} = this;
+    const {getFilesFromEntry, readEntries} = this;
 
     if (entry.isDirectory) {
-      return new Promise(resolve => {
-        const reader = entry.createReader();
-
-        reader.readEntries((entries: FileSystemEntry[]) => {
+        return readEntries(entry).then(entries => {
           const promises = entries.map(getFilesFromEntry);
 
-          Promise.all(promises).then(result => {
-            Promise.all(flatten(result)).then(result => {
-              resolve(flatten(result));
-            });
-          });
+          return Promise.all(promises).then(result => flatten(result));
         });
-      });
     } else {
       return entry;
     }
