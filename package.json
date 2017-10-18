@@ -4,6 +4,7 @@
   "description": "Get a flatten array of dropped files using FileSystem api",
   "main": "dist/index.js",
   "scripts": {
+    "test": "jest",
     "start": "webpack -w",
     "serve": "serve"
   },
@@ -12,8 +13,16 @@
   "license": "MIT",
   "devDependencies": {
     "awesome-typescript-loader": "^3.2.3",
+    "jest": "^21.2.1",
     "serve": "^6.2.0",
     "typescript": "^2.5.3",
     "webpack": "^3.7.1"
+  },
+  "jest": {
+    "moduleFileExtensions": ["ts", "tsx", "js"],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
+    },
+    "testMatch": ["**/__tests__/*.(ts|tsx|js)"]
   }
 }
