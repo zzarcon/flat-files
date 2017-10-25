@@ -15,7 +15,7 @@ export type DroppedCallback = (files: FileSystemEntry[]) => void;
 
 const flatten = (arr: any[]) => [].concat.apply([], arr);
 
-class FileFlattener {
+export class FileFlattener {
   dropzone: Element;
   callback: DroppedCallback;
 
@@ -39,16 +39,14 @@ class FileFlattener {
     e.preventDefault();
 
     const {getFilesFromEntry, callback} = this;
-    const data = e.dataTransfer;
-    const {items} = data;
-
+    const {items} = e.dataTransfer;
     const promises = Array.from(items).map((item: DataTransferItem) => {
       const entry = item.webkitGetAsEntry() as FileSystemEntry;
 
       return getFilesFromEntry(entry);
     });
 
-    Promise.all(promises).then(files => {
+    return Promise.all(promises).then(files => {
       callback(flatten(files));
     });
   }
