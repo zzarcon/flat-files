@@ -15,7 +15,9 @@ export type DroppedCallback = (files: FileSystemEntry[]) => void;
 
 const flatten = (arr: any[]) => [].concat.apply([], arr);
 
-class FileFlattener {
+const toArray = (arr: any) => [].slice.call(arr, 0);
+
+export class FileFlattener {
   dropzone: Element;
   callback: DroppedCallback;
 
@@ -39,16 +41,14 @@ class FileFlattener {
     e.preventDefault();
 
     const {getFilesFromEntry, callback} = this;
-    const data = e.dataTransfer;
-    const {items} = data;
-
-    const promises = Array.from(items).map((item: DataTransferItem) => {
+    const {items} = e.dataTransfer;
+    const promises = toArray(items).map((item: DataTransferItem) => {
       const entry = item.webkitGetAsEntry() as FileSystemEntry;
 
       return getFilesFromEntry(entry);
     });
 
-    Promise.all(promises).then(files => {
+    return Promise.all(promises).then(files => {
       callback(flatten(files));
     });
   }
@@ -57,11 +57,12 @@ class FileFlattener {
     return new Promise(resolve => {
       const reader = entry.createReader();
 
-      reader.readEntries(resolve);
+      // TODO: Investigate typing mismatch
+      reader.readEntries(resolve as any);
     });
   }
 
-  private getFilesFromEntry = (entry: FileSystemEntry): Promise<FileSystemEntry[]> | FileSystemEntry => {
+  private getFilesFromEntry = (entry: FileSystemEntry): Promise<FileSystemEntry[]> => {
     const {getFilesFromEntry, readEntries} = this;
 
     if (entry.isDirectory) {
@@ -71,7 +72,7 @@ class FileFlattener {
           return Promise.all(promises).then(result => flatten(result));
         });
     } else {
-      return entry;
+      return Promise.resolve([entry]);
     }
   };
 }
