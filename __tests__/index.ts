@@ -1,6 +1,6 @@
 import flatFiles, {FileFlattener} from '../src';
 
-const DropzoneElement = jest.fn(() => {
+const DropzoneElement: any = jest.fn(() => {
   return {
     addEventListener() {
       
@@ -20,7 +20,7 @@ const FileSystemEntry = jest.fn((props: FileSystemEntryProps) => {
     otherProps = {
       createReader() {
         return {
-          readEntries: (resolver) => resolver(props.entries || [])
+          readEntries: (resolver: Function) => resolver(props.entries || [])
         }
       }
     };
@@ -38,7 +38,7 @@ const DataTransferItem = jest.fn(({entry}) => {
   };
 });
 
-const DragEvent = jest.fn((items) => {
+const DragEvent: any = jest.fn((items) => {
   return {
     preventDefault() {
 
@@ -62,10 +62,12 @@ describe('#FileFlattener', () => {
 
     flattener.subscribe();
 
-    await flattener['onDrop'](new DragEvent([
-      new DataTransferItem({entry: new FileSystemEntry({name: 1})}),
-      new DataTransferItem({entry: new FileSystemEntry({name: 2})})
-    ]));
+    await flattener['onDrop'](
+      new DragEvent([
+        new DataTransferItem({entry: new FileSystemEntry({name: 1})}),
+        new DataTransferItem({entry: new FileSystemEntry({name: 2})})
+      ])
+    );
 
     expect(onDropCallback).toHaveBeenCalledWith([{
       name: 1
@@ -77,13 +79,15 @@ describe('#FileFlattener', () => {
   it('should not return directories in the result array', async () => {
     const onDropCallback = jest.fn();
     const flattener = new FileFlattener(new DropzoneElement(), onDropCallback);
-    
+
     flattener.subscribe();
 
-    await flattener['onDrop'](new DragEvent([
-      new DataTransferItem({entry: new FileSystemEntry({isDirectory: true})}),
-      new DataTransferItem({entry: new FileSystemEntry({name: 1})})
-    ]));
+    await flattener['onDrop'](
+      new DragEvent([
+        new DataTransferItem({entry: new FileSystemEntry({isDirectory: true})}),
+        new DataTransferItem({entry: new FileSystemEntry({name: 1})})
+      ])
+    );
 
     expect(onDropCallback).toHaveBeenCalledWith([{
       name: 1
@@ -99,10 +103,12 @@ describe('#FileFlattener', () => {
 
     flattener.subscribe();
 
-    await flattener['onDrop'](new DragEvent([
-      new DataTransferItem({entry: new FileSystemEntry({isDirectory: true, entries})}),
-      new DataTransferItem({entry: new FileSystemEntry({name: 'b'})})
-    ]));
+    await flattener['onDrop'](
+      new DragEvent([
+        new DataTransferItem({entry: new FileSystemEntry({isDirectory: true, entries})}),
+        new DataTransferItem({entry: new FileSystemEntry({name: 'b'})})
+      ])
+    );
 
 
     expect(onDropCallback).toHaveBeenCalledWith([{

@@ -4,4 +4,4 @@ node_js:
 cache: yarn
 script:
   - yarn
-  - yarn test -- --runInBand --coverage
+  - yarn test-ci
