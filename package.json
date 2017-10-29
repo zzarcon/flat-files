@@ -1,38 +1,24 @@
 {
-  "name": "flat-files",
-  "version": "1.0.0",
-  "description": "Get a flatten array of dropped files using FileSystem api",
+  "name": "flat-files-gh-pages",
+  "version": "0.0.1",
+  "description": "Demo of flat-files lib",
   "main": "dist/index.js",
   "scripts": {
-    "test": "jest",
     "start": "webpack -w",
     "serve": "serve",
-    "build": "webpack -p",
-    "test-ci": "jest --runInBand --coverage",
-    "prepublishOnly": "test-ci && yarn build"
+    "build": "webpack -p"
   },
   "repository": "git@github.com:zzarcon/flat-files.git",
   "author": "Hector Leon Zarco Garcia <hezarco@gmail.com>",
   "license": "MIT",
   "devDependencies": {
-    "@types/jest": "^21.1.5",
-    "awesome-typescript-loader": "^3.2.3",
-    "jest": "^21.2.1",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-preset-env": "^1.6.1",
     "serve": "^6.2.0",
-    "typescript": "^2.5.3",
     "webpack": "^3.7.1"
   },
-  "jest": {
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js"
-    ],
-    "transform": {
-      "^.+\\.(ts|tsx)$": "<rootDir>/preprocessor.js"
-    },
-    "testMatch": [
-      "**/__tests__/*.(ts|tsx|js)"
-    ]
+  "dependencies": {
+    "flat-files": "^1.0.0"
   }
 }

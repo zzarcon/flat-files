@@ -1,8 +1,0 @@
-__tests__
-coverage
-example
-.travis.yml
-preprocessor.js
-README.md
-tsconfig.json
-webpack.config.js
