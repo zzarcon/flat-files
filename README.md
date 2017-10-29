@@ -1,5 +1,9 @@
-# flat-files [![Build Status](https://travis-ci.org/zzarcon/flat-files.svg?branch=master)](https://travis-ci.org/zzarcon/flat-files)
+# flat-files [![Build Status](https://travis-ci.org/zzarcon/flat-files.svg?branch=master)](https://travis-ci.org/zzarcon/flat-files) https://zzarcon.github.io/flat-files
 > Get a flatten array of dropped files using FileSystem api
+
+# Demo
+
+https://zzarcon.github.io/flat-files
 
 # Usage
 
