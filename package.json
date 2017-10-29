@@ -9,6 +9,7 @@
     "serve": "serve",
     "build": "webpack -p",
     "test-ci": "jest --runInBand --coverage",
+    "release": "npm version patch && git push --tags && git push && npm publish",
     "prepublishOnly": "test-ci && yarn build"
   },
   "repository": "git@github.com:zzarcon/flat-files.git",

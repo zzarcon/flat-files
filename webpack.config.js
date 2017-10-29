@@ -5,7 +5,9 @@ module.exports = {
   entry: './example/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js'
+    filename: 'index.js',
+    libraryTarget: 'umd',
+    library: 'flatFiles',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
