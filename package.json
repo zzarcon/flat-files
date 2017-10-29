@@ -19,6 +19,6 @@
     "webpack": "^3.7.1"
   },
   "dependencies": {
-    "flat-files": "^1.0.0"
+    "flat-files": "^1.0.2"
   }
 }
