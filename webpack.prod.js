@@ -1,11 +1,15 @@
 const path = require('path');
 const { CheckerPlugin } = require('awesome-typescript-loader');
 
+console.log('using production config...');
+
 module.exports = {
-  entry: './example/index.ts',
+  entry: './src/index.ts',
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'index.js'
+    filename: 'index.js',
+    libraryTarget: 'umd',
+    library: 'flatFiles',
   },
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx']
