@@ -25,8 +25,13 @@ export default class App extends Component {
       })
     ));
 
-    Promise.all(promises).then(files => {
-      this.setState({files});
+    Promise.all(promises).then(result => {
+      this.setState({
+        files: {
+          length: result.length,
+          files: result
+        }
+      });
     });
   }
 
@@ -42,7 +47,7 @@ export default class App extends Component {
           enableClipboard={false}
           indentWidth={2}
           displayObjectSize={false}
-          name="files"
+          name="Dropped Files"
           theme="flat"
         />
       </JsonViewerWrapper>

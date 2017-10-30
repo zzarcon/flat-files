@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
 export const AppWrapper = styled.div`
-  width: 100%;
   display: flex;
   justify-content: space-between;
-  margin: 20px;
+  overflow: hidden;
+  height: 100%;
 `;
 
 export const JsonViewerWrapper = styled.div`

@@ -21247,8 +21247,13 @@ var App = function (_Component) {
         });
       });
 
-      Promise.all(promises).then(function (files) {
-        _this.setState({ files: files });
+      Promise.all(promises).then(function (result) {
+        _this.setState({
+          files: {
+            length: result.length,
+            files: result
+          }
+        });
       });
     }, _temp), _possibleConstructorReturn(_this, _ret);
   }
@@ -21269,7 +21274,7 @@ var App = function (_Component) {
           enableClipboard: false,
           indentWidth: 2,
           displayObjectSize: false,
-          name: 'files',
+          name: 'Dropped Files',
           theme: 'flat'
         })
       );
@@ -21406,7 +21411,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.DropzoneWrapper = exports.JsonViewerWrapper = exports.AppWrapper = undefined;
 
-var _templateObject = _taggedTemplateLiteral(['\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n'], ['\n  width: 100%;\n  display: flex;\n  justify-content: space-between;\n  margin: 20px;\n']),
+var _templateObject = _taggedTemplateLiteral(['\n  display: flex;\n  justify-content: space-between;\n  overflow: hidden;\n  height: 100%;\n'], ['\n  display: flex;\n  justify-content: space-between;\n  overflow: hidden;\n  height: 100%;\n']),
     _templateObject2 = _taggedTemplateLiteral(['\n  height: 100vh;\n  overflow: auto;\n  flex: 1;\n  margin-left: 30px;\n  border-radius: 3px;\n'], ['\n  height: 100vh;\n  overflow: auto;\n  flex: 1;\n  margin-left: 30px;\n  border-radius: 3px;\n']),
     _templateObject3 = _taggedTemplateLiteral(['\n  width: 600px;\n  height: 350px;\n  border: 10px dotted #5C4B51;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 30px;\n  transition: all .3s;\n  text-shadow: 1px 1px 2px black;\n  cursor: pointer;\n\n  ', '\n'], ['\n  width: 600px;\n  height: 350px;\n  border: 10px dotted #5C4B51;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  font-size: 30px;\n  transition: all .3s;\n  text-shadow: 1px 1px 2px black;\n  cursor: pointer;\n\n  ', '\n']);
 
