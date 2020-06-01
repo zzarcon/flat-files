@@ -10,7 +10,7 @@
     "build": "webpack --config webpack.prod.js -p",
     "test-ci": "jest --runInBand --coverage",
     "release": "npm version patch && git push --tags && git push && npm publish",
-    "prepublishOnly": "test-ci && yarn build"
+    "prepublishOnly": "yarn test-ci && yarn build"
   },
   "repository": "git@github.com:zzarcon/flat-files.git",
   "author": "Hector Leon Zarco Garcia <hezarco@gmail.com>",
