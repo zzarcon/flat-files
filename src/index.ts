@@ -17,6 +17,57 @@ const flatten = (arr: any[]) => [].concat.apply([], arr);
 
 const toArray = (arr: any) => [].slice.call(arr, 0);
 
+const readEntries = (entry: FileSystemEntry): Promise<FileSystemEntry[]> => {
+  return new Promise(resolve => {
+    const reader = entry.createReader();
+
+    // TODO: Investigate typing mismatch
+    reader.readEntries(resolve as any);
+  });
+}
+
+const getFilesFromEntry = (entry: FileSystemEntry): Promise<FileSystemEntry[]> => {
+  if (entry.isDirectory) {
+    return readEntries(entry).then(entries => {
+      const promises = entries.map(getFilesFromEntry);
+
+      return Promise.all(promises).then(result => flatten(result));
+    });
+  } else {
+    return Promise.resolve([entry]);
+  }
+};
+
+export const getFilesFromItems = (items: DataTransferItemList): Promise<FileSystemEntry[]> => {
+  const promises = toArray(items).map((item: DataTransferItem) => {
+    const entry = item.webkitGetAsEntry(); // webkitGetAsEntry returns any :(
+
+    return getFilesFromEntry(entry);
+  });
+
+  return Promise.all(promises).then(files => {
+    return flatten(files);
+  });
+}
+
+export const getFilesFromFileSystemEntries = (fileSystemEntries: FileSystemEntry[]): Promise<File[]> => {
+  return new Promise<File[]>(resolve => {
+    const files: File[] = [];
+
+    fileSystemEntries.forEach(fileSystemEntry => {
+      // TODO: file method doesn't have typings
+      (fileSystemEntry as any).file((file: File) => {
+        files.push(file)
+
+        if (files.length === fileSystemEntries.length) {
+          resolve(files);
+        }
+      })
+    })
+  })
+}
+
+
 export class FileFlattener {
   dropzone: Element;
   callback: DroppedCallback;
@@ -37,44 +88,15 @@ export class FileFlattener {
     e.preventDefault();
   }
 
-  private onDrop = (e: DragEvent) => {
+  private onDrop = async (e: DragEvent) => {
     e.preventDefault();
 
-    const {getFilesFromEntry, callback} = this;
+    const {callback} = this;
     const {items} = e.dataTransfer;
-    const promises = toArray(items).map((item: DataTransferItem) => {
-      const entry = item.webkitGetAsEntry() as FileSystemEntry;
-
-      return getFilesFromEntry(entry);
-    });
-
-    return Promise.all(promises).then(files => {
-      callback(flatten(files));
-    });
+    const files = await getFilesFromItems(items);
+    
+    callback(files);
   }
-
-  private readEntries(entry: FileSystemEntry): Promise<FileSystemEntry[]> {
-    return new Promise(resolve => {
-      const reader = entry.createReader();
-
-      // TODO: Investigate typing mismatch
-      reader.readEntries(resolve as any);
-    });
-  }
-
-  private getFilesFromEntry = (entry: FileSystemEntry): Promise<FileSystemEntry[]> => {
-    const {getFilesFromEntry, readEntries} = this;
-
-    if (entry.isDirectory) {
-        return readEntries(entry).then(entries => {
-          const promises = entries.map(getFilesFromEntry);
-
-          return Promise.all(promises).then(result => flatten(result));
-        });
-    } else {
-      return Promise.resolve([entry]);
-    }
-  };
 }
 
 export const flatFiles = (dropzone: Element, callback: DroppedCallback) => {
