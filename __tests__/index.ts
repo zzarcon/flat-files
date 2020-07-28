@@ -1,11 +1,7 @@
 import flatFiles, {FileFlattener} from '../src';
 
-const DropzoneElement: any = jest.fn(() => {
-  return {
-    addEventListener() {
-      
-    }
-  };
+const createDropzone = (): any => ({
+  addEventListener: jest.fn()
 });
 
 export interface FileSystemEntryProps {
@@ -13,7 +9,7 @@ export interface FileSystemEntryProps {
   entries: FileSystemEntryProps[];
 }
 
-const FileSystemEntry = jest.fn((props: FileSystemEntryProps) => {
+const createFileSystemEntry = ((props: any) => {
   let otherProps = {};
 
   if (props.isDirectory) {
@@ -32,42 +28,35 @@ const FileSystemEntry = jest.fn((props: FileSystemEntryProps) => {
   };
 });
 
-const DataTransferItem = jest.fn(({entry}) => {
-  return {
-    webkitGetAsEntry: () => entry
-  };
-});
+const createDataTransferItem = ({entry}: any) => ({
+  webkitGetAsEntry: () => entry
+})
 
-const DragEvent: any = jest.fn((items) => {
-  return {
-    preventDefault() {
+const createDragEvent = (items: any): any => ({
+  preventDefault() {
 
-    },
-    dataTransfer: {items}
-  }
-});
-
+  },
+  dataTransfer: {items}
+})
 describe.skip('#flatFiles', () => {
   test('should return the right length of files', () => {
     const onDropCallback = jest.fn();
 
-    flatFiles(new DropzoneElement(), onDropCallback);
+    flatFiles(createDropzone(), onDropCallback);
   });
 });
 
 describe('#FileFlattener', () => {
   it('should return an array containing all dropped files', async () => {
     const onDropCallback = jest.fn();
-    const flattener = new FileFlattener(new DropzoneElement(), onDropCallback);
+    const flattener = new FileFlattener(createDropzone(), onDropCallback);
 
     flattener.subscribe();
-
-    await flattener['onDrop'](
-      new DragEvent([
-        new DataTransferItem({entry: new FileSystemEntry({name: 1})}),
-        new DataTransferItem({entry: new FileSystemEntry({name: 2})})
-      ])
-    );
+    const dragEvent = createDragEvent([
+      createDataTransferItem({entry: createFileSystemEntry({name: 1})}),
+      createDataTransferItem({entry: createFileSystemEntry({name: 2})})
+    ]);
+    await flattener['onDrop'](dragEvent);
 
     expect(onDropCallback).toHaveBeenCalledWith([{
       name: 1
@@ -78,14 +67,14 @@ describe('#FileFlattener', () => {
 
   it('should not return directories in the result array', async () => {
     const onDropCallback = jest.fn();
-    const flattener = new FileFlattener(new DropzoneElement(), onDropCallback);
+    const flattener = new FileFlattener(createDropzone(), onDropCallback);
 
     flattener.subscribe();
 
     await flattener['onDrop'](
-      new DragEvent([
-        new DataTransferItem({entry: new FileSystemEntry({isDirectory: true})}),
-        new DataTransferItem({entry: new FileSystemEntry({name: 1})})
+      createDragEvent([
+        createDataTransferItem({entry: createFileSystemEntry({isDirectory: true})}),
+        createDataTransferItem({entry: createFileSystemEntry({name: 1})})
       ])
     );
 
@@ -96,17 +85,17 @@ describe('#FileFlattener', () => {
 
   it('should work with nested directories', async () => {
     const onDropCallback = jest.fn();
-    const flattener = new FileFlattener(new DropzoneElement(), onDropCallback);
+    const flattener = new FileFlattener(createDropzone(), onDropCallback);
     const entries = [
-      new FileSystemEntry({name: 'a'})
+      createFileSystemEntry({name: 'a'})
     ];
 
     flattener.subscribe();
 
     await flattener['onDrop'](
-      new DragEvent([
-        new DataTransferItem({entry: new FileSystemEntry({isDirectory: true, entries})}),
-        new DataTransferItem({entry: new FileSystemEntry({name: 'b'})})
+      createDragEvent([
+        createDataTransferItem({entry: createFileSystemEntry({isDirectory: true, entries})}),
+        createDataTransferItem({entry: createFileSystemEntry({name: 'b'})})
       ])
     );
 
