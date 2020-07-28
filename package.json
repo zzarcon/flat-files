@@ -1,6 +1,6 @@
 {
   "name": "flat-files",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Get a flatten array of dropped files using FileSystem api",
   "scripts": {
     "test": "ts-react-toolbox test",
