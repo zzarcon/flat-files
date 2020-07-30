@@ -7,10 +7,6 @@ export interface FileSystemEntry {
   createReader: () => DirectoryReaderSync;
 }
 
-export interface File {
-
-};
-
 export type DroppedCallback = (files: FileSystemEntry[]) => void;
 
 const flatten = (arr: any[]) => [].concat.apply([], arr);
